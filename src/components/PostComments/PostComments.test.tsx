@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import Post from '.';
 import PostComment from '.';
 
 describe('Teste para o componente PostComment', () => {
@@ -7,4 +6,27 @@ describe('Teste para o componente PostComment', () => {
         render(<PostComment/>);
         expect(screen.getByText('Comentar')).toBeInTheDocument();
     });
+
+    it('deve adicionar dois comentarios', () => {
+        render(<PostComment/>);
+
+        fireEvent.change(screen.getByTestId('comment-textarea'), {
+            target:{
+                value: 'comentario adicionado teste',
+            }
+        });
+
+        fireEvent.click(screen.getByTestId('comment-button'));
+
+        fireEvent.change(screen.getByTestId('comment-textarea'),{
+            target:{
+                value:'segundo comentario adicionado teste',
+            }
+        });
+
+        fireEvent.click(screen.getByTestId('comment-button'));
+
+        expect(screen.getByTestId('comment-element')).toHaveLength(2);
+    });
 });
+
